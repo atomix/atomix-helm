@@ -1,0 +1,125 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: atomix-pv
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 20Gi
+  hostPath:
+    path: /data/atomix-pv
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: atomix-hs
+  labels:
+    app: atomix
+spec:
+  ports:
+  - port: 5678
+    name: client
+  - port: 5679
+    name: server
+  clusterIP: None
+  selector:
+    app: atomix
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: atomix-cm
+data:
+  jvm.heap: "1G"
+---
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: atomix-pdb
+spec:
+  selector:
+    matchLabels:
+      app: atomix
+  maxUnavailable: 1
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: atomix
+spec:
+  selector:
+    matchLabels:
+      app: atomix
+  serviceName: atomix-hs
+  replicas: 3
+  updateStrategy:
+    type: RollingUpdate
+  podManagementPolicy: Parallel
+  template:
+    metadata:
+      labels:
+        app: atomix
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: "app"
+                operator: In
+                values:
+                - atomix
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: atomix-kubernetes
+        imagePullPolicy: Never
+        image: "atomix/atomix-kubernetes:3.0.5"
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "0.5"
+        ports:
+        - containerPort: 5678
+          name: client
+        - containerPort: 5679
+          name: server
+        command:
+        - sh
+        - -c
+        - "start-atomix \
+          --nodes=3 \
+          --datadir=/var/lib/atomix/data \
+          --loglevel=INFO \
+          --heap=3G"
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - "check-atomix 5678"
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - "check-atomix 5678"
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        volumeMounts:
+        - name: datadir
+          mountPath: /var/lib/atomix
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 2Gi
