@@ -6,6 +6,8 @@ ENV ATOMIX_USER=atomix \
 
 ARG ATOMIX_VERSION=3.0.5
 
+RUN apt-get update && apt-get install -y iptables dnsutils
+
 RUN set -x \
   && wget -q "https://oss.sonatype.org/content/repositories/releases/io/atomix/atomix-dist/$ATOMIX_VERSION/atomix-dist-$ATOMIX_VERSION.tar.gz" \
   && mkdir /opt/atomix \

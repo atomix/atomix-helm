@@ -15,4 +15,4 @@
 
 url="127.0.0.1:$1"
 status=$(curl --write-out %{http_code} --silent --output /dev/null "$url")
-[ status -eq 200 ] && exit 0
+[ status -eq "200" ] && exit 0

@@ -158,15 +158,21 @@ else
     #ORD=0
 fi
 
-create_config && create_data_dirs && java \
-  -XX:+UseConcMarkSweepGC \
-  -XX:+CMSIncrementalMode \
-  -Xmx$HEAP \
-  -Datomix.root="/opt/atomix" \
-  -Datomix.data="$DATA_DIR" \
-  -Datomix.log="$LOG_DIR" \
-  -Datomix.level="$LOG_LEVEL" \
-  -Datomix.config="/opt/atomix/conf/atomix.properties" \
-  -Dlogback.configurationFile="/opt/atomix/conf/logback.xml" \
-  -cp .:"/opt/atomix/lib/system/*":"/opt/atomix/lib/ext/*" \
-  io.atomix.agent.AtomixAgent
+for (( i=1; i<=$NODES; i++ )); do
+    until nslookup $NAME-$i.$DOMAIN; do echo waiting for node $i to become available; sleep 2; done;
+done
+
+create_config \
+  && create_data_dirs \
+  && java \
+    -XX:+UseConcMarkSweepGC \
+    -XX:+CMSIncrementalMode \
+    -Xmx$HEAP \
+    -Datomix.root="/opt/atomix" \
+    -Datomix.data="$DATA_DIR" \
+    -Datomix.log="$LOG_DIR" \
+    -Datomix.level="$LOG_LEVEL" \
+    -Datomix.config="/opt/atomix/conf/atomix.properties" \
+    -Dlogback.configurationFile="/opt/atomix/conf/logback.xml" \
+    -cp .:"/opt/atomix/lib/system/*":"/opt/atomix/lib/ext/*" \
+    io.atomix.agent.AtomixAgent
