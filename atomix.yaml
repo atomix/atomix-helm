@@ -16,7 +16,7 @@ kind: Service
 metadata:
   name: atomix-hs
   labels:
-    app: atomix-hs
+    app: atomix
 spec:
   ports:
   - port: 5678
@@ -26,13 +26,6 @@ spec:
   clusterIP: None
   selector:
     app: atomix
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: atomix-cm
-data:
-  jvm.heap: "1G"
 ---
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
