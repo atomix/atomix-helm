@@ -16,7 +16,7 @@ kind: Service
 metadata:
   name: atomix-hs
   labels:
-    app: atomix
+    app: atomix-hs
 spec:
   ports:
   - port: 5678
