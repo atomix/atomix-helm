@@ -74,14 +74,6 @@ spec:
           --datadir=/var/lib/atomix/data \
           --loglevel=INFO \
           --heap=4G"
-        readinessProbe:
-          exec:
-            command:
-            - sh
-            - -c
-            - "check-atomix 5678"
-          initialDelaySeconds: 10
-          timeoutSeconds: 5
         livenessProbe:
           exec:
             command:
