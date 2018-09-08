@@ -159,7 +159,7 @@ else
 fi
 
 for (( i=1; i<=$NODES; i++ )); do
-    until nslookup $NAME-$i.$DOMAIN; do echo waiting for node $i to become available; sleep 2; done;
+    until nslookup $NAME-$((i-1)).$DOMAIN; do echo waiting for node $i to become available; sleep 2; done;
 done
 
 create_config \
