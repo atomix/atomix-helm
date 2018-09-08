@@ -174,5 +174,6 @@ create_config \
     -Datomix.level="$LOG_LEVEL" \
     -Datomix.config="/opt/atomix/conf/atomix.properties" \
     -Dlogback.configurationFile="/opt/atomix/conf/logback.xml" \
+    -Dvertx.disableFileCPResolving=true \
     -cp .:"/opt/atomix/lib/system/*":"/opt/atomix/lib/ext/*" \
     io.atomix.agent.AtomixAgent
