@@ -1,15 +1,32 @@
 ---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local-storage
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: atomix-pv
 spec:
-  accessModes:
-  - ReadWriteOnce
   capacity:
     storage: 20Gi
-  hostPath:
-    path: /data/atomix-pv
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  local:
+    path: /tmp
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - minikube
 ---
 apiVersion: v1
 kind: Service
@@ -77,12 +94,10 @@ spec:
           --loglevel=INFO \
           --heap=3G"
         livenessProbe:
-          exec:
-            command:
-            - sh
-            - -c
-            - "check-atomix 5678"
-          initialDelaySeconds: 10
+          httpGet:
+            path: /v1/status
+            port: 5678
+          initialDelaySeconds: 30
           timeoutSeconds: 5
         volumeMounts:
         - name: datadir

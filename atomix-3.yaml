@@ -75,12 +75,10 @@ spec:
           --loglevel=INFO \
           --heap=4G"
         livenessProbe:
-          exec:
-            command:
-            - sh
-            - -c
-            - "check-atomix 5678"
-          initialDelaySeconds: 10
+          httpGet:
+            path: /v1/status
+            port: 5678
+          initialDelaySeconds: 30
           timeoutSeconds: 5
         volumeMounts:
         - name: datadir

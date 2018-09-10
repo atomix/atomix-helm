@@ -169,7 +169,7 @@ create_config \
     -XX:+CMSIncrementalMode \
     -Xmx$HEAP \
     -Datomix.root="/opt/atomix" \
-    -Datomix.data="$DATA_DIR" \
+    -Datomix.data="$DATA_DIR/atomix-$ORD" \
     -Datomix.log="$LOG_DIR" \
     -Datomix.level="$LOG_LEVEL" \
     -Datomix.config="/opt/atomix/conf/atomix.properties" \
