@@ -177,6 +177,14 @@ helm install --set image.tag=3.0.6 .
 helm upgrade --set image.tag=latest .
 ```
 
+## Acknowledgements
+
+Atomix is developed as part of the [ONOS][ONOS] project at the [Open Networking Foundation][ONF].
+
+![ONF](https://3vf60mmveq1g8vzn48q2o71a-wpengine.netdna-ssl.com/wp-content/uploads/2017/06/onf-logo.jpg)
+
 [Website]: https://atomix.io
+[ONF]: https://opennetworking.org
+[ONOS]: https://onosproject.org
 [Atomix]: https://github.com/atomix/atomix
 [Helm]: https://helm.sh
