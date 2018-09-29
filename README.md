@@ -26,20 +26,18 @@ To install the chart, run `helm install`:
 helm install .
 ```
 
+To install the chart on minikube, disable anti-affinity:
+
+```
+helm install --set podAntiAffinity.enabled=false .
+```
+
 ## Configuration
 
-### image
+### Atomix
 
-The image used by the chart is configurable via the `image` object:
-* `repository` (default `atomix/atomix`)
-* `tag` (default `latest`)
-* `pullPolicy` (default `IfNotPresent`)
-* `pullSecrets` (default `[]`)
-
-### atomix
-
-The `atomix` configuration is used to override the configuration for the
-Atomix pods themselves:
+The Atomix configuration is a set of root values used to override the
+configuration for the Atomix pods themselves:
 * `replicas` (default `3`)
 * `logLevel` (default `INFO`)
 * `heap` (default `2G`)
@@ -139,28 +137,36 @@ To install the chart with a custom configuration, use the `--values` option:
 helm install --values=atomix.yaml .`
 ```
 
+### image
+
+The image used by the chart is configurable via the `image` object:
+* `image.repository` (default `atomix/atomix`)
+* `image.tag` (default `latest`)
+* `image.pullPolicy` (default `IfNotPresent`)
+* `image.pullSecrets` (default `[]`)
+
 ### podAntiAffinity
 
 The `podAntiAffinity` object sets the options for the StatefulSet's
 anti-affinity policy:
-* `enabled` (default `true`)
+* `podAntiAffinity.enabled` (default `true`)
 
 ### podDisruptionBudget
 
 The `podDisruptionBudget` configures the number of nodes that can be
 taken offline by k8s:
-* `enabled` (default `true`)
-* `maxUnavailable` (default `1`)
-* `minAvailable`
+* `podDisruptionBudget.enabled` (default `true`)
+* `podDisruptionBudget.maxUnavailable` (default `1`)
+* `podDisruptionBudget.minAvailable`
 
 ### persistence
 
 The `persistence` object is used to override the persistence configuration
 for the chart. The available `persistence` options are:
-* `accessModes`
-* `size` (default `10Gi`)
-* `annotations` (default `{}`)
-* `storageClass`
+* `persistence.accessModes`
+* `persistence.size` (default `10Gi`)
+* `persistence.annotations` (default `{}`)
+* `persistence.storageClass`
 
 It's recommended that `local-storage` be used for clusters where Raft
 partition groups are used. It's essential that Raft logs for a single pod

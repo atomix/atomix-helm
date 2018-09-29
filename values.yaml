@@ -6,25 +6,24 @@ image:
   pullPolicy: IfNotPresent
   pullSecrets: []
 
-atomix:
-  replicas: 3
-  logLevel: INFO
-  heap: 2G
-  config: |
-    managementGroup {
-      type: raft
-      name: system
-      partitionSize: 3
-      partitions: 1
-      members: ${atomix.members}
-    }
-    partitionGroups.raft {
-      type: raft
-      name: raft
-      partitionSize: 3
-      partitions: ${atomix.replicas}
-      members: ${atomix.members}
-    }
+replicas: 3
+logLevel: INFO
+heap: 2G
+config: |
+  managementGroup {
+    type: raft
+    name: system
+    partitionSize: 3
+    partitions: 1
+    members: ${atomix.members}
+  }
+  partitionGroups.raft {
+    type: raft
+    name: raft
+    partitionSize: 3
+    partitions: ${atomix.replicas}
+    members: ${atomix.members}
+  }
 
 podAntiAffinity:
   enabled: true
