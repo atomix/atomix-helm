@@ -22,7 +22,7 @@ spec:
   selector:
     matchLabels:
       app: {{ template "fullname" . }}
-  replicas: {{ .Values.atomix.replicas }}
+  replicas: {{ .Values.replicas }}
   updateStrategy:
     type: RollingUpdate
   podManagementPolicy: Parallel
@@ -48,7 +48,7 @@ spec:
         image: ubuntu:16.04
         env:
         - name: ATOMIX_NODES
-          value: {{ default "1" .Values.atomix.replicas | quote }}
+          value: {{ default "1" .Values.replicas | quote }}
         command:
         - sh
         - -c
