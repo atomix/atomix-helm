@@ -64,7 +64,7 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
         - name: JAVA_OPTS
-          value: -Xmx{{ default "2G" .Values.atomix.heap }}
+          value: -Xmx{{ default "2G" .Values.heap }}
         resources:
           requests:
             memory: {{ .Values.resources.requests.memory }}
