@@ -37,3 +37,24 @@ spec:
     port: 5678
   selector:
     app: {{ template "fullname" . }}
+{{- if .Values.ingress.enabled }}
+{{ range $k, $v := until (atoi (quote .Values.replicas) | default 3) }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "fullname" $ }}-{{ $v }}-api
+  namespace: {{ $.Values.Namespace }}
+  labels:
+    app: {{ template "fullname" $ }}
+    chart: "{{ $.Chart.Name }}-{{ $.Chart.Version }}"
+    release: "{{ $.Release.Name }}"
+    heritage: "{{ $.Release.Service }}"
+spec:
+  ports:
+  - name: {{ template "fullname" $ }}-{{ $v }}-api
+    port: 5678
+  selector:
+    statefulset.kubernetes.io/pod-name: {{ template "fullname" $ }}-{{ $v }}
+{{ end }}
+{{- end }}

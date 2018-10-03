@@ -25,6 +25,9 @@ config: |
     members: ${atomix.members}
   }
 
+ingress:
+  enabled: false
+
 podAntiAffinity:
   enabled: true
 

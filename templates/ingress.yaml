@@ -1,0 +1,18 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ template "fullname" . }}-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - http:
+        paths:
+        {{- range $k, $v := until (atoi (quote .Values.replicas) | default 3) }}
+        - path: /{{ template "fullname" $ }}-{{ $v }}
+          backend:
+            serviceName: {{ template "fullname" $ }}-{{ $v }}-api
+            servicePort: 5678
+        {{- end }}
+{{- end }}
