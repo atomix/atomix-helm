@@ -23,13 +23,13 @@ git clone --branch master https://github.com/atomix/atomix-k8s.git && cd atomix-
 To install the chart, run `helm install`:
 
 ```
-helm install .
+helm install atomix
 ```
 
 To install the chart on minikube, disable anti-affinity:
 
 ```
-helm install --set podAntiAffinity.enabled=false .
+helm install --set podAntiAffinity.enabled=false atomix
 ```
 
 ## Configuration
@@ -134,7 +134,7 @@ variables with the correct values for the running chart.
 To install the chart with a custom configuration, use the `--values` option:
 
 ```
-helm install --values=atomix.yaml .`
+helm install --values=atomix.yaml atomix`
 ```
 
 ### image
@@ -179,8 +179,8 @@ To upgrade Atomix, use the `helm upgrade` command, overriding the `image.tag`
 value:
 
 ```
-helm install --set image.tag=3.0.6 .
-helm upgrade --set image.tag=latest .
+helm install --set image.tag=3.0.6 atomix
+helm upgrade --set image.tag=latest atomix
 ```
 
 ## Acknowledgements
