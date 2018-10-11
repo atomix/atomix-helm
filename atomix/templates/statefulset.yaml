@@ -75,14 +75,14 @@ spec:
         - name: server
           containerPort: 5679
         args:
-        - "--config"
-        - "/etc/atomix/system/atomix.properties"
-        - "/etc/atomix/user/atomix.conf"
-        - "--ignore-resources"
-        - "--data-dir=/var/lib/atomix/data"
-        - "--log-level=INFO"
-        - "--file-log-level=OFF"
-        - "--console-log-level=INFO"
+        - --config
+        - /etc/atomix/system/atomix.properties
+        - /etc/atomix/user/atomix.conf
+        - --ignore-resources
+        - --data-dir=/var/lib/atomix/data
+        - --log-level={{ default "INFO" .Values.logLevel }}
+        - --file-log-level=OFF
+        - --console-log-level={{ default "INFO" .Values.logLevel }}
         readinessProbe:
           httpGet:
             path: /v1/status
