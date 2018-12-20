@@ -11,12 +11,9 @@ data:
   create-config.sh: |
     #!/usr/bin/env bash
 
-    USER=`whoami`
     HOST=`hostname -s`
     DOMAIN=`hostname -d`
-    DATA_DIR="/var/lib/atomix/data"
-    LOG_DIR="/var/log/atomix"
-    LOG_LEVEL=INFO
+    SERVICE=${DOMAIN%%.}
     NODES=1
     HEAP=2G
 
@@ -29,32 +26,19 @@ data:
     }
 
     function print_variables() {
+        echo "atomix.service=$SERVICE"
+        echo "atomix.node.id=$NAME-$ORD"
+        echo "atomix.node.host=$NAME-$ORD.$DOMAIN"
+        echo "atomix.node.port=5679"
         echo "atomix.replicas=$NODES"
-        for (( i=1; i<=$NODES; i++ ))
+        for (( i=0; i<$NODES; i++ ))
         do
             echo "atomix.members.$i=$NAME-$((i))"
         done
     }
 
-    function print_node() {
-        echo "cluster.node.id=$NAME-$((ORD+1))"
-        echo "cluster.node.address=$NAME-$ORD.$DOMAIN:5679"
-    }
-
-    function print_discovery() {
-        echo "cluster.discovery.type=bootstrap"
-        for (( i=1; i<=$NODES; i++ ))
-        do
-            echo "cluster.discovery.nodes.$i.id=$NAME-$((i))"
-            echo "cluster.discovery.nodes.$i.address=$NAME-$((i-1)).$DOMAIN:5679"
-        done
-    }
-
     function create_config() {
         print_variables
-        echo "cluster.cluster-id=atomix"
-        print_node
-        print_discovery
     }
 
     optspec=":hv-:"

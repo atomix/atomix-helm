@@ -10,6 +10,14 @@ replicas: 3
 logLevel: INFO
 heap: 2G
 config: |
+  cluster {
+    node: ${atomix.node}
+
+    discovery {
+      type: dns
+      service: ${atomix.service}
+    }
+  }
   managementGroup {
     type: raft
     name: system
