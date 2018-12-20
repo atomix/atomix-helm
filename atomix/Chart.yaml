@@ -1,9 +1,9 @@
 apiVersion: v1
 name: atomix
-version: 0.1.1
+version: 0.1.2
 kubeVersion: ">=1.10.0"
-appVersion: 3.0.6
-description: Configurable Atomix 3.0.6 cluster
+appVersion: 3.1.0
+description: Configurable Atomix 3.1.0 cluster
 keywords:
   - atomix
   - database

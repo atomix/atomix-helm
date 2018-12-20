@@ -2,7 +2,7 @@ nameOverride: ""
 
 image:
   repository: atomix/atomix
-  tag: 3.0.6
+  tag: 3.1.0
   pullPolicy: IfNotPresent
   pullSecrets: []
 
