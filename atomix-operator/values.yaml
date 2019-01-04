@@ -1,0 +1,12 @@
+nameOverride: ""
+
+crd:
+  enabled: true
+
+image:
+  repository: atomix/atomix-operator
+  tag: latest
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+replicas: 1
