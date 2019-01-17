@@ -33,6 +33,8 @@ data:
         for (( i=0; i<$NODES; i++ ))
         do
             echo "atomix.members.$i=$NAME-$((i))"
+            echo "atomix.nodes.$i.id=$NAME-$((i))"
+            echo "atomix.nodes.$i.address=$NAME-$((i)).$DOMAIN:5679"
         done
     }
 

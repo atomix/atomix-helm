@@ -14,8 +14,8 @@ config: |
     node: ${atomix.node}
 
     discovery {
-      type: dns
-      service: ${atomix.service}
+      type: bootstrap
+      nodes: ${atomix.nodes}
     }
   }
   managementGroup {
