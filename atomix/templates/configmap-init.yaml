@@ -28,8 +28,7 @@ data:
     function print_variables() {
         echo "atomix.service=$SERVICE"
         echo "atomix.node.id=$NAME-$ORD"
-        echo "atomix.node.host=$NAME-$ORD.$DOMAIN"
-        echo "atomix.node.port=5679"
+        echo "atomix.node.address=\"$NAME-$ORD.$DOMAIN:5679\""
         echo "atomix.replicas=$NODES"
         for (( i=0; i<$NODES; i++ ))
         do
