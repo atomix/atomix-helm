@@ -97,8 +97,10 @@ spec:
           initialDelaySeconds: 60
           timeoutSeconds: 10
         volumeMounts:
+        {{- if .Values.persistence.enabled }}
         - name: data
           mountPath: /var/lib/atomix
+        {{- end }}
         - name: system-config
           mountPath: /etc/atomix/system
         - name: user-config
@@ -119,6 +121,7 @@ spec:
           name: {{ template "fullname" . }}-config
       - name: system-config
         emptyDir: {}
+  {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
   - metadata:
       name: data
@@ -141,3 +144,4 @@ spec:
       resources:
         requests:
           storage: {{ .Values.persistence.size | quote }}
+  {{- end }}

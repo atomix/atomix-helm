@@ -45,6 +45,7 @@ podDisruptionBudget:
   # minAvailable: 1
 
 persistence:
+  enabled: true
   accessModes:
     - ReadWriteOnce
   size: 10Gi
